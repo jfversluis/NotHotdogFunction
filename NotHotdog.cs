@@ -1,28 +1,28 @@
+using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
-using System;
-using System.IO;
 using System.Net.Http.Formatting;
 using System.Text;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace NotHotdogFunc
 {
 	public static class NotHotdog
 	{
 		[FunctionName("NotHotdog")]
-		public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)]HttpRequestMessage req, TraceWriter log)
+		public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)]HttpRequestMessage req, ILogger log)
 		{
 			// grab the key and URI from the portal config
-			string visionKey = "eda2b23aeb544ab19de4b5eec1f7dfc1";//Environment.GetEnvironmentVariable("VisionKey");
-			string visionUri = "https://westeurope.api.cognitive.microsoft.com/";// Environment.GetEnvironmentVariable("VisionUri");
+			string visionKey = Environment.GetEnvironmentVariable("VisionKey");
+			string visionUri = Environment.GetEnvironmentVariable("VisionUri");
 
 			// create a client and request Tags for the image submitted
 			ComputerVisionClient vsc = new ComputerVisionClient(new ApiKeyServiceClientCredentials(visionKey));
